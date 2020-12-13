@@ -24,7 +24,7 @@
         // successCallback
         function(localMediaStream) {
            var video = document.querySelector('video');
-           video.src = window.URL.createObjectURL(localMediaStream);
+           video.srcObject = localMediaStream;
            video.onloadedmetadata = function(e) {
              video.play();
              renderStart();

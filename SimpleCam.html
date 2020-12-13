@@ -42,7 +42,7 @@
       }, function(stream) { // success
         console.log("Start Video", stream);
         localStream = stream;
-        video.src = URL.createObjectURL(stream);
+        video.srcObject = stream;
 		video.onloadedmetadata = function(e) {
 		  video.play();
           video.volume = 0;
