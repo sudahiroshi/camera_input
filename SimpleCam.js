@@ -9,6 +9,12 @@ getVideoSources(function (cam) {
   control.appendChild(b);
 });
 
+/**
+ * カメラ入力を開始する
+ *
+ * @param {カメラID} cam_id
+ * @param {映像入力するcanvas要素} video
+ */
 function main(cam_id, video) {
   navigator.mediaDevices
     .getUserMedia({

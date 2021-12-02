@@ -1,3 +1,6 @@
+/**
+ * フィルタ処理を開始する
+ */
 function renderStart() {
   let video = document.querySelector("#video");
   let buffer = document.createElement("canvas");
@@ -5,6 +8,11 @@ function renderStart() {
   let bufferContext = buffer.getContext("2d");
   let displayContext = display.getContext("2d");
 
+  /**
+   * リアルタイムで入力画像からデータを読み取り加工して出力する
+   *
+   * @returns null
+   */
   let render = function () {
     requestAnimationFrame(render);
     let width = video.videoWidth;
@@ -28,84 +36,103 @@ function renderStart() {
     //   dest.data[i + 2] = src.data[i + 2]; // Blue
     //   dest.data[i + 3] = 255; // Alpha
     // }
-    // for( let y=1; y<height-1; y++ ) {
-    //     for( let x=1; x<width*4-1; x+=4 ) {
-    //         let p = y * width*4 + x;
-    //         dest.data[p+0] = src.data[p-4+0] + src.data[p+4+0] + src.data[p-width*4+0] + src.data[p+width*4+0] / 4;
-    //         dest.data[p+1] = src.data[p-4+1] + src.data[p+4+1] + src.data[p-width*4+1] + src.data[p+width*4+1] / 4;
-    //         dest.data[p+2] = src.data[p-4+2] + src.data[p+4+2] + src.data[p-width*4+2] + src.data[p+width*4+2] / 4;
-    //         dest.data[p+3] = 255;
-    //    }
-    // }
 
-    // ぼかし（4方向）
-    for (let y = 1; y < height - 1; y++) {
-      for (let x = 4; x < width * 4 - 4; x += 4) {
-        let p = y * width * 4 + x;
-        dest.data[p + 0] =
-          (src.data[p + 0] +
+    /**
+     * 入力をそのまま出力する
+     */
+    let through = () => {
+        for( let i=0; i< dest.data.length; i++ )
+            dest.data[i] = src.data[i];
+    }
+
+    /**
+     * 画像をぼかす
+     */
+    let softfocus = () => {
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 4; x < width * 4 - 4; x += 4) {
+          let p = y * width * 4 + x;
+          dest.data[p + 0] =
+            (src.data[p + 0] +
+              src.data[p - 4 + 0] +
+              src.data[p + 4 + 0] +
+              src.data[p - width * 4 + 0] +
+              src.data[p + width * 4 + 0]) /
+            5; // red
+          dest.data[p + 1] =
+            (src.data[p + 1] +
+              src.data[p - 4 + 1] +
+              src.data[p + 4 + 1] +
+              src.data[p - width * 4 + 1] +
+              src.data[p + width * 4 + 1]) /
+            5; // green
+          dest.data[p + 2] =
+            (src.data[p + 2] +
+              src.data[p - 4 + 2] +
+              src.data[p + 4 + 2] +
+              src.data[p - width * 4 + 2] +
+              src.data[p + width * 4 + 2]) /
+            5; // blue
+          dest.data[p + 3] = 255; // alpha
+        }
+      }
+    };
+
+    /**
+     * エッジ抽出（縦方向）
+     */
+    let edge = () => {
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 4; x < width * 4 - 4; x += 4) {
+          let p = y * width * 4 + x;
+          dest.data[p + 0] =
+            -src.data[p - width * 4 + 0] + src.data[p + width * 4 + 0]; // red
+          dest.data[p + 1] =
+            -src.data[p - width * 4 + 1] + src.data[p + width * 4 + 1]; // green
+          dest.data[p + 2] =
+            -src.data[p - width * 4 + 2] + src.data[p + width * 4 + 2]; // blue
+          dest.data[p + 3] = 255; // alpha
+        }
+      }
+    };
+
+    /**
+     * ラプラシアンフィルタ
+     */
+    let laplacian = () => {
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 4; x < width * 4 - 4; x += 4) {
+          let p = y * width * 4 + x;
+          dest.data[p + 0] =
+            -4 * src.data[p + 0] +
             src.data[p - 4 + 0] +
             src.data[p + 4 + 0] +
             src.data[p - width * 4 + 0] +
-            src.data[p + width * 4 + 0]) /
-          5; // red
-        dest.data[p + 1] =
-          (src.data[p + 1] +
+            src.data[p + width * 4 + 0]; // red
+          dest.data[p + 1] =
+            -4 * src.data[p + 1] +
             src.data[p - 4 + 1] +
             src.data[p + 4 + 1] +
             src.data[p - width * 4 + 1] +
-            src.data[p + width * 4 + 1]) /
-          5; // green
-        dest.data[p + 2] =
-          (src.data[p + 2] +
+            src.data[p + width * 4 + 1]; // green
+          dest.data[p + 2] =
+            -4 * src.data[p + 2] +
             src.data[p - 4 + 2] +
             src.data[p + 4 + 2] +
             src.data[p - width * 4 + 2] +
-            src.data[p + width * 4 + 2]) /
-          5; // blue
-        dest.data[p + 3] = 255; // alpha
+            src.data[p + width * 4 + 2]; // blue
+          dest.data[p + 3] = 255; // alpha
+        }
       }
-    }
+    };
 
-    // エッジ抽出（縦方向）
-    for (let y = 1; y < height - 1; y++) {
-      for (let x = 4; x < width * 4 - 4; x += 4) {
-        let p = y * width * 4 + x;
-        dest.data[p + 0] =
-          -src.data[p - width * 4 + 0] + src.data[p + width * 4 + 0]; // red
-        dest.data[p + 1] =
-          -src.data[p - width * 4 + 1] + src.data[p + width * 4 + 1]; // green
-        dest.data[p + 2] =
-          -src.data[p - width * 4 + 2] + src.data[p + width * 4 + 2]; // blue
-        dest.data[p + 3] = 255; // alpha
-      }
-    }
+    // ちょっとダサいけど，コメントアウトする行を変更してやりたい処理を選択する
+    //through();
+    softfocus();
+    //edge();
+    //laplacian();
 
-    // ラプラシアン
-    for (let y = 1; y < height - 1; y++) {
-      for (let x = 4; x < width * 4 - 4; x += 4) {
-        let p = y * width * 4 + x;
-        dest.data[p + 0] =
-          -4 * src.data[p + 0] +
-          src.data[p - 4 + 0] +
-          src.data[p + 4 + 0] +
-          src.data[p - width * 4 + 0] +
-          src.data[p + width * 4 + 0]; // red
-        dest.data[p + 1] =
-          -4 * src.data[p + 1] +
-          src.data[p - 4 + 1] +
-          src.data[p + 4 + 1] +
-          src.data[p - width * 4 + 1] +
-          src.data[p + width * 4 + 1]; // green
-        dest.data[p + 2] =
-          -4 * src.data[p + 2] +
-          src.data[p - 4 + 2] +
-          src.data[p + 4 + 2] +
-          src.data[p - width * 4 + 2] +
-          src.data[p + width * 4 + 2]; // blue
-        dest.data[p + 3] = 255; // alpha
-      }
-    }
+    // 描画
     displayContext.putImageData(dest, 0, 0);
   };
   render();
