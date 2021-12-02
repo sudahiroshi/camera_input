@@ -22,16 +22,93 @@ function renderStart() {
     /* ##############################
 		    ここで画像処理を行う
 		############################## */
-    for (let i = 0; i < dest.data.length; i += 4) {
-      dest.data[i + 0] = (src.data[i + 0] + src.data[i + 1]) / 2; // Red
-      dest.data[i + 1] = (src.data[i + 0] + src.data[i + 1]) / 2; // Green
-      dest.data[i + 2] = src.data[i + 2]; // Blue
-      dest.data[i + 3] = 255; // Alpha
+    // for (let i = 0; i < dest.data.length; i += 4) {
+    //   dest.data[i + 0] = (src.data[i + 0] + src.data[i + 1]) / 2; // Red
+    //   dest.data[i + 1] = (src.data[i + 0] + src.data[i + 1]) / 2; // Green
+    //   dest.data[i + 2] = src.data[i + 2]; // Blue
+    //   dest.data[i + 3] = 255; // Alpha
+    // }
+    // for( let y=1; y<height-1; y++ ) {
+    //     for( let x=1; x<width*4-1; x+=4 ) {
+    //         let p = y * width*4 + x;
+    //         dest.data[p+0] = src.data[p-4+0] + src.data[p+4+0] + src.data[p-width*4+0] + src.data[p+width*4+0] / 4;
+    //         dest.data[p+1] = src.data[p-4+1] + src.data[p+4+1] + src.data[p-width*4+1] + src.data[p+width*4+1] / 4;
+    //         dest.data[p+2] = src.data[p-4+2] + src.data[p+4+2] + src.data[p-width*4+2] + src.data[p+width*4+2] / 4;
+    //         dest.data[p+3] = 255;
+    //    }
+    // }
+
+    // ぼかし（4方向）
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 4; x < width * 4 - 4; x += 4) {
+        let p = y * width * 4 + x;
+        dest.data[p + 0] =
+          (src.data[p + 0] +
+            src.data[p - 4 + 0] +
+            src.data[p + 4 + 0] +
+            src.data[p - width * 4 + 0] +
+            src.data[p + width * 4 + 0]) /
+          5; // red
+        dest.data[p + 1] =
+          (src.data[p + 1] +
+            src.data[p - 4 + 1] +
+            src.data[p + 4 + 1] +
+            src.data[p - width * 4 + 1] +
+            src.data[p + width * 4 + 1]) /
+          5; // green
+        dest.data[p + 2] =
+          (src.data[p + 2] +
+            src.data[p - 4 + 2] +
+            src.data[p + 4 + 2] +
+            src.data[p - width * 4 + 2] +
+            src.data[p + width * 4 + 2]) /
+          5; // blue
+        dest.data[p + 3] = 255; // alpha
+      }
     }
 
+    // エッジ抽出（縦方向）
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 4; x < width * 4 - 4; x += 4) {
+        let p = y * width * 4 + x;
+        dest.data[p + 0] =
+          -src.data[p - width * 4 + 0] + src.data[p + width * 4 + 0]; // red
+        dest.data[p + 1] =
+          -src.data[p - width * 4 + 1] + src.data[p + width * 4 + 1]; // green
+        dest.data[p + 2] =
+          -src.data[p - width * 4 + 2] + src.data[p + width * 4 + 2]; // blue
+        dest.data[p + 3] = 255; // alpha
+      }
+    }
+
+    // ラプラシアン
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 4; x < width * 4 - 4; x += 4) {
+        let p = y * width * 4 + x;
+        dest.data[p + 0] =
+          -4 * src.data[p + 0] +
+          src.data[p - 4 + 0] +
+          src.data[p + 4 + 0] +
+          src.data[p - width * 4 + 0] +
+          src.data[p + width * 4 + 0]; // red
+        dest.data[p + 1] =
+          -4 * src.data[p + 1] +
+          src.data[p - 4 + 1] +
+          src.data[p + 4 + 1] +
+          src.data[p - width * 4 + 1] +
+          src.data[p + width * 4 + 1]; // green
+        dest.data[p + 2] =
+          -4 * src.data[p + 2] +
+          src.data[p - 4 + 2] +
+          src.data[p + 4 + 2] +
+          src.data[p - width * 4 + 2] +
+          src.data[p + width * 4 + 2]; // blue
+        dest.data[p + 3] = 255; // alpha
+      }
+    }
     displayContext.putImageData(dest, 0, 0);
   };
   render();
 }
 
-document.querySelector('#start').addEventListener('click', renderStart );
+document.querySelector("#start").addEventListener("click", renderStart);
