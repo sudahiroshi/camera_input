@@ -1,85 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <script>
-
-  window.addEventListener( 'load', function() {
-  navigator.getUserMedia = ( navigator.getUserMedia ||
-                         navigator.webkitGetUserMedia ||
-                         navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia);
-
-  if (navigator.getUserMedia) {
-     navigator.getUserMedia (
-
-        // constraints
-        {
-          //video: {optional: [ { sourceId: "a0ba22da9a8c4af259ee921428e8bb68c804afed4d26b104b29afb8fc651ffa4"}]}
-           video: true
-           //audio: true
-        },
-
-        // successCallback
-        function(localMediaStream) {
-           var video = document.querySelector('video');
-           video.srcObject = localMediaStream;
-           video.onloadedmetadata = function(e) {
-             video.play();
-             renderStart();
-           }
-           // Do something with the video here, e.g. video.play()
-        },
-
-        // errorCallback
-        function(err) {
-           console.log("The following error occured: " + err);
-        }
-     );
-  } else {
-     console.log("getUserMedia not supported");
-  }
-
-  function renderStart() {
-	var video = document.getElementById('video');
-	var buffer = document.createElement('canvas');
-	var display = document.getElementById('display_canvas');
-	var bufferContext = buffer.getContext('2d');
-	var displayContext = display.getContext('2d');
-
-	var render = function() {
-		requestAnimationFrame(render);
-		var width = video.videoWidth;
-		var height = video.videoHeight;
-		if (width == 0 || height == 0) {return;}
-		buffer.width = display.width = width;
-		buffer.height = display.height = height;
-		bufferContext.drawImage(video, 0, 0);
-
-		var src = bufferContext.getImageData(0, 0, width, height); // カメラ画像のデータ
-		var dest = bufferContext.createImageData(buffer.width, buffer.height); // 空のデータ(サイズはカメラ画像と一緒)
-
-		/* ##############################
-		    ここで処理を行う
-		############################## */
-    for (var i = 0; i < dest.data.length; i += 4) {
-    	dest.data[i + 0] = ( src.data[i + 0] + src.data[i + 1] ) / 2; // Red
-    	dest.data[i + 1] = ( src.data[i + 0] + src.data[i + 1] ) / 2; // Green
-    	dest.data[i + 2] = src.data[i + 2]; // Blue
-    	dest.data[i + 3] = 255;                     // Alpha
-    }
-
-		displayContext.putImageData(dest, 0, 0);
-	};
-	render();
-}
-});
-
-  </script>
+  <script src="constants.js"></script>
+  <script src="SimpleCam.js" defer></script>
+  <script src="process.js" defer></script>
 </head>
 <body>
-  <video id="video"></video>
-  <canvas id="display_canvas"></canvas>
+  <div>
+    <video id="video" />
+  </div>
+  <form id="control"></form>
+  <div><canvas id="display_canvas"></canvas></div>
+  <button id="start">描画開始</button>
 </body>
 </html>
