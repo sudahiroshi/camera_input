@@ -126,11 +126,7 @@ function renderStart() {
       }
     };
 
-    // ちょっとダサいけど，コメントアウトする行を変更してやりたい処理を選択する
-    //through();
-    softfocus();
-    //edge();
-    //laplacian();
+    eval(document.querySelector('#filter').value)()
 
     // 描画
     displayContext.putImageData(dest, 0, 0);
