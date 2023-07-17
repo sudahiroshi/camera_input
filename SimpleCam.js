@@ -2,11 +2,16 @@ getVideoSources(function (cam) {
   let video = document.querySelector("#video");
   let control = document.querySelector("#control");
   //console.log("cam", cam);
+  let l = document.createElement('label');
+  let br = document.createElement('br');
   let b = document.createElement("input");
   b.type = "button";
   b.value = cam.name;
   b.addEventListener("click", () => main(cam.id, video));
-  control.appendChild(b);
+  control.appendChild(l);
+  l.innerText = "カメラを選択してください"
+  l.appendChild(b);
+  l.appendChild(br);
 });
 
 /**
