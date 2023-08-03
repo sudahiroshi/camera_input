@@ -6,19 +6,41 @@
   <script src="constants.js"></script>
   <script src="SimpleCam.js" defer></script>
   <script src="process.js" defer></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div>
     <video id="video" />
   </div>
-  <form id="control"></form>
-  <div><canvas id="display_canvas"></canvas></div>
-  <button id="start">描画開始</button>
+  <form id="control">
+    <span id="select">カメラを選択してください</span>
+  </form>
+
+  <table>
+    <tr>
+      <td class="matrix"><input type="number" id="matrix11" value="0" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix12" value="0" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix13" value="0" min="-10" max="10" step="0.1"></td>
+    </tr> 
+    <tr>
+      <td class="matrix"><input type="number" id="matrix21" value="0" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix22" value="1" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix23" value="0" min="-10" max="10" step="0.1"></td>
+    </tr> 
+    <tr>
+      <td class="matrix"><input type="number" id="matrix31" value="0" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix32" value="0" min="-10" max="10" step="0.1"></td>
+      <td class="matrix"><input type="number" id="matrix33" value="0" min="-10" max="10" step="0.1"></td>
+    </tr>
+  </table>
+  <!-- <button id="start">描画開始</button>
   <select id="filter">
     <option value="through">through</option>
     <option value="softfocus" selected>softfocus</option>
     <option value="edge">edge</option>
     <option value="laplacian">laplacian</option>
-  </select>
+  </select> -->
+  <button id="reset">リセット</button>
+  <div><canvas id="display_canvas"></canvas></div>
 </body>
 </html>

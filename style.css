@@ -1,0 +1,8 @@
+#video {
+    display: none;
+}
+
+.matrix>input {
+    height: 32pt;
+    width: 48px;
+}
