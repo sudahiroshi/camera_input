@@ -40,7 +40,18 @@
     <option value="edge">edge</option>
     <option value="laplacian">laplacian</option>
   </select> -->
-  <button id="reset">リセット</button>
+  <button id="reset">リセット</button><br>
+  <button id="smooth">単純な平滑化</button>  <!-- all 1/9 -->
+  <button id="gaussian">加重平均化（ガウシアン）</button>  <!-- 0.0625 0.125 0.0625 / 0.125 0.25 0.125 / 0.0625 0.125 0.0625 -->
+  <button id="sharp1">鮮鋭化1</button>  <!-- 0 -1 0 / -1 5 -1 / 0 -1 0 -->
+  <button id="sharp2">鮮鋭化2</button>  <!-- -1 -1 -1 / -1 9 -1 / -1 -1 -1 -->
+  <button id="diffx">横方向微分</button>  <!-- 0 0 0 / 0 -1 1 / 0 0 0 -->
+  <button id="sobel_x">横方向ソーベル</button>  <!-- -1 0 1 / -2 0 2 / -1 0 1 -->
+  <button id="diffy">縦方向微分</button>  <!-- 0 0 0 / 0 -1 0 / 0 1 0 -->
+  <button id="sobel_y">縦方向ソーベル</button>  <!-- 1 2 1 / 0 0 0 / -1 -2 -1 -->
+  <button id="laplacian">ラプラシアン</button>  <!-- -1 -1 -1 / -1 8 -1 / -1 -1 -1 -->
+  <button id="emboss">エンボス</button>  <!-- -2 -1 0 / -1 1 1 / 0 1 2 -->
+
   <div><canvas id="display_canvas"></canvas></div>
 </body>
 </html>

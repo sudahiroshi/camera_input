@@ -24,7 +24,128 @@ document.querySelector("#reset").addEventListener('click', () => {
   document.querySelector("#matrix31").value = 0;
   document.querySelector("#matrix32").value = 0;
   document.querySelector("#matrix33").value = 0;
-})
+});
+
+document.querySelector("#smooth").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 1.0/9.0;
+  document.querySelector("#matrix12").value = 1.0/9.0;
+  document.querySelector("#matrix13").value = 1.0/9.0;
+  document.querySelector("#matrix21").value = 1.0/9.0;
+  document.querySelector("#matrix22").value = 1.0/9.0;
+  document.querySelector("#matrix23").value = 1.0/9.0;
+  document.querySelector("#matrix31").value = 1.0/9.0;
+  document.querySelector("#matrix32").value = 1.0/9.0;
+  document.querySelector("#matrix33").value = 1.0/9.0;
+});
+
+document.querySelector("#gaussian").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 1.0/16.0;
+  document.querySelector("#matrix12").value = 1.0/8.0;
+  document.querySelector("#matrix13").value = 1.0/16.0;
+  document.querySelector("#matrix21").value = 1.0/8.0;
+  document.querySelector("#matrix22").value = 1.0/4.0;
+  document.querySelector("#matrix23").value = 1.0/8.0;
+  document.querySelector("#matrix31").value = 1.0/16.0;
+  document.querySelector("#matrix32").value = 1.0/8.0;
+  document.querySelector("#matrix33").value = 1.0/16.0;
+});
+
+document.querySelector("#sharp1").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 0;
+  document.querySelector("#matrix12").value = -1;
+  document.querySelector("#matrix13").value = 0;
+  document.querySelector("#matrix21").value = -1;
+  document.querySelector("#matrix22").value = 5;
+  document.querySelector("#matrix23").value = -1;
+  document.querySelector("#matrix31").value = 0;
+  document.querySelector("#matrix32").value = -1;
+  document.querySelector("#matrix33").value = 0;
+});
+
+document.querySelector("#sharp2").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = -1;
+  document.querySelector("#matrix12").value = -1;
+  document.querySelector("#matrix13").value = -1;
+  document.querySelector("#matrix21").value = -1;
+  document.querySelector("#matrix22").value = 9;
+  document.querySelector("#matrix23").value = -1;
+  document.querySelector("#matrix31").value = -1;
+  document.querySelector("#matrix32").value = -1;
+  document.querySelector("#matrix33").value = -1;
+});
+
+document.querySelector("#diffx").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 0;
+  document.querySelector("#matrix12").value = 0;
+  document.querySelector("#matrix13").value = 0;
+  document.querySelector("#matrix21").value = 0;
+  document.querySelector("#matrix22").value = -1;
+  document.querySelector("#matrix23").value = 1;
+  document.querySelector("#matrix31").value = 0;
+  document.querySelector("#matrix32").value = 0;
+  document.querySelector("#matrix33").value = 0;
+});
+
+document.querySelector("#sobel_x").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = -1;
+  document.querySelector("#matrix12").value = 0;
+  document.querySelector("#matrix13").value = 1;
+  document.querySelector("#matrix21").value = -2;
+  document.querySelector("#matrix22").value = 0;
+  document.querySelector("#matrix23").value = 2;
+  document.querySelector("#matrix31").value = -1;
+  document.querySelector("#matrix32").value = 0;
+  document.querySelector("#matrix33").value = 1;
+});
+
+document.querySelector("#diffy").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 0;
+  document.querySelector("#matrix12").value = 0;
+  document.querySelector("#matrix13").value = 0;
+  document.querySelector("#matrix21").value = 0;
+  document.querySelector("#matrix22").value = -1;
+  document.querySelector("#matrix23").value = 0;
+  document.querySelector("#matrix31").value = 0;
+  document.querySelector("#matrix32").value = 1;
+  document.querySelector("#matrix33").value = 0;
+});
+
+document.querySelector("#sobel_y").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = 1;
+  document.querySelector("#matrix12").value = 2;
+  document.querySelector("#matrix13").value = 1;
+  document.querySelector("#matrix21").value = 0;
+  document.querySelector("#matrix22").value = 0;
+  document.querySelector("#matrix23").value = 0;
+  document.querySelector("#matrix31").value = -1;
+  document.querySelector("#matrix32").value = -2;
+  document.querySelector("#matrix33").value = -1;
+});
+
+document.querySelector("#laplacian").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = -1;
+  document.querySelector("#matrix12").value = -1;
+  document.querySelector("#matrix13").value = -1;
+  document.querySelector("#matrix21").value = -1;
+  document.querySelector("#matrix22").value = 8;
+  document.querySelector("#matrix23").value = -1;
+  document.querySelector("#matrix31").value = -1;
+  document.querySelector("#matrix32").value = -1;
+  document.querySelector("#matrix33").value = -1;
+});
+
+document.querySelector("#emboss").addEventListener('click', () => {
+  document.querySelector("#matrix11").value = -2;
+  document.querySelector("#matrix12").value = -1;
+  document.querySelector("#matrix13").value =  0;
+  document.querySelector("#matrix21").value = -1;
+  document.querySelector("#matrix22").value =  1;
+  document.querySelector("#matrix23").value =  1;
+  document.querySelector("#matrix31").value =  0;
+  document.querySelector("#matrix32").value =  1;
+  document.querySelector("#matrix33").value =  2;
+});
+
 /**
  * カメラ入力を開始する
  *
